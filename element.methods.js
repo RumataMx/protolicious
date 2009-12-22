@@ -344,10 +344,17 @@ document.delegate = Element.Methods.delegate.curry(document);
  **/
 Element.Methods.fillDocument = function(element) {
   element = $(element);
+  var doc = document;
   var vpDim = document.viewport.getDimensions();
   var docDim = $(document.documentElement).getDimensions();
   element.style.width = Math.max(docDim.width, vpDim.width) + 'px';
-  element.style.height = Math.max(docDim.height, vpDim.height) + 'px';
+//  commented for reference
+//  element.style.height = Math.max(docDim.height, vpDim.height) + 'px';
+//  calling some native methods to get the document height since in IE the target element did not filled the document
+  element.style.height = Math.max(
+     Math.max(doc.body.scrollHeight,doc.documentElement.scrollHeight),
+     Math.max(doc.body.offsetHeight,doc.documentElement.offsetHeight),
+     Math.max(doc.body.clientHeight, doc.documentElement.clientHeight)) + 'px';
   return element;
 };
 
